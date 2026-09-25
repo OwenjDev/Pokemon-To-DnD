@@ -20,5 +20,6 @@ const ABILITY_EFFECTS = {
   "wonder-guard": "This creature is immune to damage from attacks unless the attack exploits one of its Pokémon-type weaknesses.",
   "parental-bond": "This creature may use it's bonus action during it's turn to gain advantage on it's next attack roll.",
   unaware: "This creature does not take bonus damage from attacks, and rolls against it cannot have advantage.",
-  static: "Contact with this creature has a 1/4 chance to inflict Paralysis."
+  static: "Contact with this creature has a 1/4 chance to inflict Paralysis.",
+  "overgrow": "While at one-third of its maximum HP or less, this creature's Grass-type attacks deal one additional damage die."
 };
