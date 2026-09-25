@@ -609,7 +609,7 @@ function renderLearnset(moves, pokemonLevel, stabTypes) {
   `).join("");
 
   $("learnset").querySelectorAll("input").forEach(checkbox => {
-    checkbox.onchange = async event => {
+   checkbox.onchange = async event => {
       const moveName = event.target.dataset.name;
 
       if (event.target.checked) {
@@ -621,22 +621,32 @@ function renderLearnset(moves, pokemonLevel, stabTypes) {
 
         showError();
         event.target.disabled = true;
-        try {
-          const details = await getMoveDetails(event.target.dataset.url);
-          selectedMoves.set(moveName, convertMove(details, stabTypes));
-        } catch (error) {
-          console.error(error);
-          event.target.checked = false;
-          showError(`Couldn't load ${titleCase(moveName)}. Try selecting it again.`);
-        } finally {
-          event.target.disabled = false;
-        }
-      } else {
-        selectedMoves.delete(moveName);
-      }
 
-      $("moveCount").textContent = `${selectedMoves.size}/6 selected`;
-      updateOutput();
+        try {
+        const details = await getMoveDetails(event.target.dataset.url);
+        const convertedMove = convertMove(details, stabTypes);
+
+        selectedMoves.set(moveName, convertedMove);
+
+    // Update only AFTER the move has been fetched and stored.
+    $("moveCount").textContent = `${selectedMoves.size}/6 selected`;
+    updateOutput();
+
+  } catch (error) {
+    console.error(error);
+    event.target.checked = false;
+    showError(`Couldn't load ${titleCase(moveName)}. Try selecting it again.`);
+  } finally {
+    event.target.disabled = false;
+  }
+
+} else {
+  selectedMoves.delete(moveName);
+
+  // Immediately update when a move is removed.
+  $("moveCount").textContent = `${selectedMoves.size}/6 selected`;
+  updateOutput();
+}
     };
   });
 }
