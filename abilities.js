@@ -10,12 +10,15 @@ const ABILITY_EFFECTS = {
   "poison-heal": "Instead of taking damage from poison, this creature regains hit points equal to the amount it would have taken.",
   "natural-cure": "When this creature leaves combat, one condition affecting it ends.",
   "speed-boost": "At the end of each of its turns, this creature's speed increases by 10 feet, to a maximum increase of 30 feet. The bonus ends when combat ends.",
-  "huge-power": "The creature deals one additional weapon damage die with Strength-based attacks.",
-  "pure-power": "The creature deals one additional weapon damage die with Strength-based attacks.",
+  "huge-power": "The creature doubles weapon damage die with Strength-based attacks.",
+  "pure-power": "The creatures doubles weapon damage die with Strength-based attacks.",
   technician: "When this creature uses a damaging move with a base power of 60 or lower, it deals one additional damage die.",
   "magic-guard": "This creature only takes damage from attacks and effects that directly target it.",
   prankster: "The creature has advantage on initiative checks made to use status moves.",
   pressure: "Once per round, the first hostile creature to target this creature with an attack has disadvantage on its attack roll.",
   multiscale: "While this creature is at full hit points, it has resistance to damage.",
   "wonder-guard": "This creature is immune to damage from attacks unless the attack exploits one of its Pokémon-type weaknesses.",
+  "parental-bond": "This creature may use it's bonus action during it's turn to gain advantage on it's next attack roll.",
+  unaware: "This creature does not take bonus damage from attacks, and rolls against it cannot have advantage.",
+  static: "Contact with this creature has a 1/4 chance to inflict Paralysis."
 };
