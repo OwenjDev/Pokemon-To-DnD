@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Pokémon → D&D Converter</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <script
+    src="app.js"
+    defer
+  ></script>
+</head>
+
+
+<body>
+
+  <main class="container">
+
+    <h1>Pokémon → D&D Converter</h1>
+
+    <section class="controls">
+
+      <label>
+        Pokémon
+        <input
+          id="pokemonName"
+          type="text"
+          placeholder="e.g. bulbasaur"
+        >
+      </label>
+
+
+      <label>
+        Pokémon Level:
+        <strong id="levelLabel">50</strong>
+
+        <input
+          id="pokeLevel"
+          type="range"
+          min="1"
+          max="100"
+          value="50"
+        >
+      </label>
+
+
+      <button id="generateBtn">
+        Generate
+      </button>
+
+    </section>
+
+
+    <section class="pokemonCard">
+
+      <div class="spriteArea">
+
+        <img
+          id="sprite"
+          alt="Pokémon sprite"
+        >
+
+        <button
+          id="shinyBtn"
+          disabled
+        >
+          Toggle Shiny
+        </button>
+
+      </div>
+
+
+      <div>
+
+        <div id="badges"></div>
+
+        <p id="dexEntry"></p>
+
+      </div>
+
+    </section>
+
+
+    <section>
+
+      <h2>Available Moves</h2>
+
+      <p class="hint">
+        Select up to six moves.
+      </p>
+
+      <div id="learnset"></div>
+
+    </section>
+
+
+    <section>
+
+      <div class="outputHeader">
+
+        <h2>D&D Stat Block</h2>
+
+        <button
+          id="copyBtn"
+          disabled
+        >
+          Copy
+        </button>
+
+      </div>
+
+      <pre id="output">
+Choose a Pokémon and click Generate.
+      </pre>
+
+    </section>
+
+  </main>
+
+</body>
+
+</html>
