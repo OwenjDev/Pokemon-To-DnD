@@ -9,6 +9,11 @@
     content="width=device-width, initial-scale=1.0"
   >
 
+  <meta
+    name="description"
+    content="Convert Pokémon into Dungeons & Dragons-style creatures."
+  >
+
   <title>Pokémon → D&D Converter</title>
 
   <link
@@ -25,25 +30,61 @@
 
 <body>
 
-  <main class="container">
+  <header class="siteHeader">
 
-    <h1>Pokémon → D&D Converter</h1>
+    <div class="headerInner">
 
-    <section class="controls">
+      <div>
+        <h1>Pokémon → D&D</h1>
 
-      <label>
-        Pokémon
+        <p class="subtitle">
+          Turn Pokémon into quick 5e-style creatures.
+        </p>
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <main class="page">
+
+    <!-- =====================================================
+         SEARCH / SETTINGS
+    ====================================================== -->
+
+    <section class="searchPanel">
+
+      <div class="searchField">
+
+        <label for="pokemonName">
+          Pokémon
+        </label>
+
         <input
           id="pokemonName"
           type="text"
-          placeholder="e.g. bulbasaur"
+          placeholder="Bulbasaur, Gengar, Dragonite..."
+          autocomplete="off"
         >
-      </label>
+
+      </div>
 
 
-      <label>
-        Pokémon Level:
-        <strong id="levelLabel">50</strong>
+      <div class="levelField">
+
+        <div class="levelHeading">
+
+          <label for="pokeLevel">
+            Pokémon level
+          </label>
+
+          <span class="levelValue">
+            Lv <strong id="levelLabel">50</strong>
+          </span>
+
+        </div>
+
 
         <input
           id="pokeLevel"
@@ -52,81 +93,161 @@
           max="100"
           value="50"
         >
-      </label>
+
+        <div class="rangeLabels">
+          <span>1</span>
+          <span>100</span>
+        </div>
+
+      </div>
 
 
-      <button id="generateBtn">
+      <button
+        id="generateBtn"
+        class="primaryButton"
+      >
         Generate
       </button>
 
     </section>
 
 
-    <section class="pokemonCard">
+    <!-- =====================================================
+         MAIN APP
+    ====================================================== -->
 
-      <div class="spriteArea">
+    <div class="appGrid">
 
-        <img
-          id="sprite"
-          alt="Pokémon sprite"
-        >
+
+      <!-- ===================================================
+           POKÉMON INFO
+      ==================================================== -->
+
+      <section class="panel pokemonPanel">
+
+        <div class="panelTitle">
+          <h2>Pokémon</h2>
+        </div>
+
+
+        <div class="spriteWrapper">
+
+          <img
+            id="sprite"
+            alt="Pokémon sprite"
+          >
+
+        </div>
+
 
         <button
           id="shinyBtn"
+          class="secondaryButton fullWidth"
           disabled
         >
-          Toggle Shiny
+          Toggle shiny
         </button>
 
-      </div>
+
+        <div
+          id="badges"
+          class="badges"
+        ></div>
 
 
-      <div>
+        <div class="dexBox">
 
-        <div id="badges"></div>
+          <h3>Pokédex</h3>
 
-        <p id="dexEntry"></p>
+          <p id="dexEntry">
+            Choose a Pokémon to begin.
+          </p>
 
-      </div>
+        </div>
 
-    </section>
-
-
-    <section>
-
-      <h2>Available Moves</h2>
-
-      <p class="hint">
-        Select up to six moves.
-      </p>
-
-      <div id="learnset"></div>
-
-    </section>
+      </section>
 
 
-    <section>
 
-      <div class="outputHeader">
+      <!-- ===================================================
+           MOVE SELECTOR
+      ==================================================== -->
 
-        <h2>D&D Stat Block</h2>
+      <section class="panel movePanel">
 
-        <button
-          id="copyBtn"
-          disabled
+        <div class="panelTitle">
+
+          <div>
+            <h2>Moves</h2>
+
+            <p>
+              Select up to six.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div
+          id="learnset"
+          class="learnset"
         >
-          Copy
-        </button>
 
-      </div>
+          <div class="emptyState">
+            Generate a Pokémon to see its available moves.
+          </div>
 
-      <pre id="output">
+        </div>
+
+      </section>
+
+
+
+      <!-- ===================================================
+           D&D OUTPUT
+      ==================================================== -->
+
+      <section class="panel outputPanel">
+
+        <div class="panelTitle outputTitle">
+
+          <div>
+            <h2>D&D Stat Block</h2>
+
+            <p>
+              Generated from stats, abilities, and selected moves.
+            </p>
+          </div>
+
+
+          <button
+            id="copyBtn"
+            class="secondaryButton"
+            disabled
+          >
+            Copy
+          </button>
+
+        </div>
+
+
+        <pre id="output" class="output">
 Choose a Pokémon and click Generate.
-      </pre>
+        </pre>
 
-    </section>
+      </section>
+
+    </div>
 
   </main>
+
+
+  <footer>
+
+    Pokémon data provided by PokéAPI.
+    D&D conversion rules are unofficial homebrew.
+
+  </footer>
 
 </body>
 
