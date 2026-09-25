@@ -1,0 +1,21 @@
+// Add hand-written D&D ability translations here over time.
+const ABILITY_EFFECTS = {
+  intimidate: "When this creature enters combat, hostile creatures within 30 feet must succeed on a WIS save or have disadvantage on their next attack roll.",
+  levitate: "This creature can hover and has a flying speed equal to its walking speed.",
+  sturdy: "If this creature is at full hit points and damage would reduce it to 0 hit points, it drops to 1 hit point instead.",
+  regenerator: "When this creature leaves combat without being reduced to 0 hit points, it regains one-third of its maximum hit points.",
+  "water-absorb": "The creature is immune to Cold damage from Water-type effects. When such an effect would damage it, it instead regains hit points equal to one-quarter of its maximum hit points.",
+  "volt-absorb": "The creature is immune to Lightning damage from Electric-type effects. When such an effect would damage it, it instead regains hit points equal to one-quarter of its maximum hit points.",
+  "flash-fire": "The creature is immune to Fire damage. After it would take Fire damage, its own Fire attacks deal 1 additional damage die until the end of its next turn.",
+  "poison-heal": "Instead of taking damage from poison, this creature regains hit points equal to the amount it would have taken.",
+  "natural-cure": "When this creature leaves combat, one condition affecting it ends.",
+  "speed-boost": "At the end of each of its turns, this creature's speed increases by 10 feet, to a maximum increase of 30 feet. The bonus ends when combat ends.",
+  "huge-power": "The creature deals one additional weapon damage die with Strength-based attacks.",
+  "pure-power": "The creature deals one additional weapon damage die with Strength-based attacks.",
+  technician: "When this creature uses a damaging move with a base power of 60 or lower, it deals one additional damage die.",
+  "magic-guard": "This creature only takes damage from attacks and effects that directly target it.",
+  prankster: "The creature has advantage on initiative checks made to use status moves.",
+  pressure: "Once per round, the first hostile creature to target this creature with an attack has disadvantage on its attack roll.",
+  multiscale: "While this creature is at full hit points, it has resistance to damage.",
+  "wonder-guard": "This creature is immune to damage from attacks unless the attack exploits one of its Pokémon-type weaknesses.",
+};
