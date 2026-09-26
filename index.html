@@ -36,7 +36,10 @@
         <div class="rangeLabels"><span>1</span><span>100</span></div>
       </div>
 
-      <button id="generateBtn" class="primaryButton">Generate</button>
+      <div class="searchButtons">
+        <button id="generateBtn" class="primaryButton">Generate</button>
+        <button id="randomBtn" class="secondaryButton">🎲 Random</button>
+      </div>
     </section>
 
     <div id="errorBox" class="errorBox" hidden></div>
@@ -78,6 +81,23 @@
         <pre id="output" class="output">Choose a Pokémon and click Generate.</pre>
       </section>
     </div>
+
+    <section class="panel savedPanel">
+      <div class="panelTitle savedTitle">
+        <div>
+          <h2>Saved Pokémon <span id="savedCount" class="savedCount">(0)</span></h2>
+          <p>Build a small encounter or team. Saved here on this device.</p>
+        </div>
+        <div class="savedActions">
+          <button id="addSavedBtn" class="primaryButton" disabled>Add Current</button>
+          <button id="copySavedBtn" class="secondaryButton" disabled>Copy List</button>
+          <button id="clearSavedBtn" class="secondaryButton dangerButton" disabled>Clear All</button>
+        </div>
+      </div>
+      <div id="savedList" class="savedList">
+        <div class="emptyState">No Pokémon saved yet.</div>
+      </div>
+    </section>
   </main>
 
   <footer>

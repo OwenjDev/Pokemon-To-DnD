@@ -81,6 +81,7 @@ let lastHP = 1;
 let lastAttackBonus = 0;
 let lastSaveDC = 10;
 let lastBaseBlock = "";
+let savedPokemon = loadSavedPokemon();
 
 // ================== HELPERS ==================
 
@@ -468,7 +469,11 @@ function abilityText() {
 
 $("pokeLevel").oninput = event => $("levelLabel").textContent = event.target.value;
 $("generateBtn").onclick = generate;
+$("randomBtn").onclick = generateRandomPokemon;
 $("shinyBtn").onclick = toggleShiny;
+$("addSavedBtn").onclick = addCurrentToSaved;
+$("copySavedBtn").onclick = copySavedList;
+$("clearSavedBtn").onclick = clearSavedList;
 $("copyBtn").onclick = async () => {
   await navigator.clipboard.writeText($("output").textContent);
   const button = $("copyBtn");
@@ -479,6 +484,8 @@ $("copyBtn").onclick = async () => {
 $("pokemonName").addEventListener("keydown", event => {
   if (event.key === "Enter") generate();
 });
+
+renderSavedList();
 
 // ================== GENERATE ==================
 
@@ -504,6 +511,7 @@ async function generate() {
     $("sprite").src = data.sprites.front_default ?? "";
     $("sprite").alt = `${titleCase(data.name)} sprite`;
     $("shinyBtn").disabled = false;
+    $("addSavedBtn").disabled = false;
     shiny = false;
 
     const types = data.types.map(entry => entry.type.name);
@@ -695,4 +703,133 @@ function toggleShiny() {
   const normalSprite = currentPokemon.sprites.front_default;
   const shinySprite = currentPokemon.sprites.front_shiny;
   $("sprite").src = shiny && shinySprite ? shinySprite : normalSprite;
+}
+
+
+// ================== RANDOM POKÉMON ==================
+
+async function generateRandomPokemon() {
+  const button = $("randomBtn");
+  button.disabled = true;
+  const oldText = button.textContent;
+  button.textContent = "Picking…";
+
+  try {
+    // Species IDs correspond to main Pokédex species, avoiding most special forms.
+    const speciesIndex = await fetchJSON("https://pokeapi.co/api/v2/pokemon-species?limit=1");
+    const randomId = Math.floor(Math.random() * speciesIndex.count) + 1;
+    const species = await fetchJSON(`https://pokeapi.co/api/v2/pokemon-species/${randomId}`);
+    $("pokemonName").value = species.name;
+    await generate();
+  } catch (error) {
+    console.error(error);
+    showError("Couldn't pick a random Pokémon. Try again.");
+  } finally {
+    button.disabled = false;
+    button.textContent = oldText;
+  }
+}
+
+// ================== SAVED POKÉMON ==================
+
+const SAVED_POKEMON_KEY = "pokemon-dnd-saved-v1";
+
+function loadSavedPokemon() {
+  try {
+    return JSON.parse(localStorage.getItem("pokemon-dnd-saved-v1")) ?? [];
+  } catch {
+    return [];
+  }
+}
+
+function persistSavedPokemon() {
+  localStorage.setItem(SAVED_POKEMON_KEY, JSON.stringify(savedPokemon));
+}
+
+function addCurrentToSaved() {
+  if (!currentPokemon) return;
+
+  const moves = [...selectedMoves.values()].map(move => move.name);
+  const level = +$("pokeLevel").value;
+  const sprite = shiny && currentPokemon.sprites.front_shiny
+    ? currentPokemon.sprites.front_shiny
+    : currentPokemon.sprites.front_default;
+
+  savedPokemon.push({
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    name: titleCase(currentPokemon.name),
+    apiName: currentPokemon.name,
+    level,
+    shiny,
+    sprite,
+    moves,
+    statBlock: $("output").textContent
+  });
+
+  persistSavedPokemon();
+  renderSavedList();
+}
+
+function removeSavedPokemon(id) {
+  savedPokemon = savedPokemon.filter(mon => mon.id !== id);
+  persistSavedPokemon();
+  renderSavedList();
+}
+
+function clearSavedList() {
+  if (!savedPokemon.length) return;
+  if (!confirm("Clear all saved Pokémon?")) return;
+  savedPokemon = [];
+  persistSavedPokemon();
+  renderSavedList();
+}
+
+function savedListText() {
+  return savedPokemon.map(mon => {
+    if (mon.statBlock) return mon.statBlock;
+
+    // Backward-compatible fallback for Pokémon saved before full stat blocks
+    // were stored. Re-add an old entry to capture its complete D&D block.
+    const shinyLabel = mon.shiny ? " [Shiny]" : "";
+    const moves = mon.moves.length ? mon.moves.join(", ") : "No moves selected";
+    return `${mon.name}${shinyLabel} — Lv ${mon.level}\nMoves: ${moves}`;
+  }).join("\n\n========================================\n\n");
+}
+
+async function copySavedList() {
+  if (!savedPokemon.length) return;
+  await navigator.clipboard.writeText(savedListText());
+  const button = $("copySavedBtn");
+  const oldText = button.textContent;
+  button.textContent = "Copied!";
+  setTimeout(() => button.textContent = oldText, 1000);
+}
+
+function renderSavedList() {
+  const list = $("savedList");
+  if (!list) return;
+
+  $("savedCount").textContent = `(${savedPokemon.length})`;
+  $("copySavedBtn").disabled = savedPokemon.length === 0;
+  $("clearSavedBtn").disabled = savedPokemon.length === 0;
+
+  if (!savedPokemon.length) {
+    list.innerHTML = '<div class="emptyState">No Pokémon saved yet.</div>';
+    return;
+  }
+
+  list.innerHTML = savedPokemon.map(mon => `
+    <article class="savedCard">
+      <img class="savedSprite" src="${mon.sprite ?? ""}" alt="${mon.name} sprite">
+      <div class="savedInfo">
+        <h3>${mon.name}${mon.shiny ? " ✨" : ""} — Lv ${mon.level}</h3>
+        <p>${mon.moves.length ? mon.moves.join(" • ") : "No moves selected"}</p>
+      </div>
+      <button class="removeSavedBtn" data-saved-id="${mon.id}" title="Remove from saved list" aria-label="Remove ${mon.name}">✕</button>
+    </article>
+  `).join("");
+
+  list.querySelectorAll(".removeSavedBtn").forEach(button => {
+    button.onclick = () => removeSavedPokemon(button.dataset.savedId);
+  });
 }
